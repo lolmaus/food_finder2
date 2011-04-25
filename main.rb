@@ -21,9 +21,12 @@ $:.unshift( File.join(APP_ROOT, 'conf') )
 
 # Подключаем библиотеки
 
-require 'conf' # Конфигурация
-require 'guide' # Класс взаимодействия с пользователем
+require 'conf'          # Конфигурация
+require 'restaurant'    # Модель
+Restaurant.init!
 
+
+require 'guide' # Класс взаимодействия с пользователем
 
 # Поехали!
 Guide.launch!

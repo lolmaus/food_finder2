@@ -23,13 +23,12 @@ Action.new(['find','search'])
 #   Добавление нового ресторана #
 #################################
 Action.new(['add','new']) do
-	putn "Добавляем ресторан. Введите его данные."
 
 	restaurant = Restaurant.build_with_wizard
 
 	if restaurant
 		if restaurant.save
-			putn "Ресторан добавлен.n"
+			putn "Ресторан добавлен."
 		else
 			putn "Ошибка сохранения. :( Ресторан не добавлен."
 		end

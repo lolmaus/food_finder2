@@ -9,6 +9,7 @@
 #
 #Потом перебираем case'ом все элементы DB.db_types и создаем инстанс соответствующего класса.
 
+require 'custom_io'
 
 class DB
 
@@ -21,32 +22,21 @@ class DB
 		@@database_types[key]
 	end
 
-#	Грузим все классы из поддиректории.
-	Dir[File.dirname(__FILE__) + '/db_classes/*.rb'].each {|file| require file }
+	def self.return_new_db_instance
+#   	Грузим все классы из поддиректории.
+		Dir[File.dirname(__FILE__) + '/db_classes/*.rb'].each {|file| require file }
 
-#	Проверяем, имеется ли тип БД того типа, который прописан в конфиге
-	unless Conf[:db_type]
-		putn "В конфиге не указан тип БД. Программа прервана."
-		exit!
-	end
-	if @@database_types.has_key?(Conf[:db_type])
-		@@db = @@database_types[Conf[:db_type]].new
+#   	Проверяем, имеется ли тип БД того типа, который прописан в конфиге
+		unless Conf[:db_type]
+			putn "В конфиге не указан тип БД. Программа прервана."
+			exit!
+		end
+		if @@database_types.has_key?(Conf[:db_type])
+			return @@database_types[Conf[:db_type]].new
 
-	else
-		putn "Не обнаружен тип БД, прописанный в конфиге. Программа прервана."
-		exit!
-	end
-
-
-
-#	Возвращает экземпляр класса, дочернего от DB и реализующего взаимодействие
-#	с БД того типа, который прописан в конфиге.
-	def self.return_new_db_object
-		if Conf[:db_type] == :csv
-			require "db_csv"
-			return DB_CSV.new
 		else
-			raise "В конфиге не прописан известный программе тип базы данных."
+			putn "Не обнаружен тип БД, прописанный в конфиге. Программа прервана."
+			exit!
 		end
 	end
 
